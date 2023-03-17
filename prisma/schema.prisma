@@ -50,7 +50,8 @@ model User {
   image         String?
   createdAt     DateTime  @default(now()) @map(name: "created_at")
   updatedAt     DateTime  @updatedAt @map(name: "updated_at")
-  bookmarks     Article[]
+  userBookmark    UserBookmark? @relation(fields: [userBookmarkId], references: [id])
+  userBookmarkId Int
   accounts      Account[]
   sessions      Session[]
 
@@ -70,7 +71,14 @@ model Article {
   id        Int     @id @default(autoincrement())
   title     String
   content   String
-  users     User[]
+  userBookmark  UserBookmark? @relation(fields: [userBookmarkId], references: [id])
+  userBookmarkId Int
 
   @@map("articles")
+}
+
+model UserBookmark {
+  id            Int       @id @default(autoincrement())
+  User          User[]
+  Article       Article[]
 }
